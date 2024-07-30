@@ -1,6 +1,3 @@
-# constants
-constants/
-
 # dependencies
 node_modules/
 
@@ -34,3 +31,6 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Environmental variables
+.env
