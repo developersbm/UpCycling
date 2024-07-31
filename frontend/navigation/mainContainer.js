@@ -1,48 +1,43 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import HomeScreen from './/screens/HomeScreen.js'
-import PlayListScreen from './/screens/PlaylistScreen.js';
-import SocialScreen from './/screens/SocialScreen.js';
-import AccountScreen from './/screens/AccountScreen.js';
+import PostScreen from './screens/PostScreen';
+import PlaylistScreen from './screens/PlaylistScreen';
+import SocialScreen from './screens/SocialScreen';
 
-const homeName = "Home";
-const PlayListScreen = "PlayList";
-const SocialScreen = "Posts";
-const AccountScreen = "Account";
+const playListName = "PlayList";
+const postName = "Post";
+const socialName = "Social";
 
 const Tab = createBottomTabNavigator();
 
 function MainContainer() {
   return (
     <Tab.Navigator
-      initialRouteName={SocialScreen}
+      initialRouteName={playListName}
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size, marginTop }) => {
+        tabBarIcon: ({ focused, color, size }) => {
+          // Define icon name based on the route
           let iconName;
-          if (route.name === homeName) {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === PlayListScreen) {
-            iconName = focused ? 'camera' : 'camera-outline';
-          } else if (route.name === SocialScreen) {
-            iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
-          } else if (route.name === AccountScreen) {
-            iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
+          if (route.name === socialName) {
+            iconName = focused ? 'people' : 'people-outline';
+          } else if (route.name === postName) {
+            iconName = focused ? 'add-circle' : 'add-circle-outline';
+          } else if (route.name === playListName) {
+            iconName = focused ? 'musical-notes' : 'musical-notes-outline';
           }
-          return <Ionicons name={iconName} size={size} color={color} marginTop={marginTop} />;
-        }
+          return <Ionicons name={iconName} size={size} color={color} style={{ marginTop: -5 }} />;
+        },
+        tabBarActiveTintColor: 'red',
+        tabBarInactiveTintColor: 'black',
+        tabBarLabelStyle: { paddingTop: 2, fontSize: 15, marginBottom: 10 },
+        tabBarStyle: { padding: 10, height: 70, paddingBottom: 10 },
+        headerShown: false
       })}
-      tabBarOptions={{
-        activeTintColor: 'green',
-        inactiveTintColor: 'black',
-        labelStyle: { paddingTop: 5, fontSize: 15, marginTop: -13 },
-        style: { padding: 10, height: 200, paddingBottom: 30 }
-      }}
     >
-      <Tab.Screen name={homeName} component={HomeScreen} options={{ headerShown: false }} />
-      <Tab.Screen name={PlayListScreen} component={PlayListScreen} options={{ headerShown: false }} />
-      <Tab.Screen name={SocialScreen} component={SocialScreen} options={{ headerShown: false }} />
-      <Tab.Screen name={AccountScreen} component={AccountScreen} options={{ headerShown: false }} />
+      <Tab.Screen name={socialName} component={SocialScreen} />
+      <Tab.Screen name={postName} component={PostScreen} />
+      <Tab.Screen name={playListName} component={PlaylistScreen} />
     </Tab.Navigator>
   );
 }

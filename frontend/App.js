@@ -1,15 +1,17 @@
 import React from 'react';
-import { LogBox, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainContainer from './navigation/mainContainer';
-import { LoginScreen } from './navigation/screens/LoginScreen';
-import { SignupScreen } from './navigation/screens/SignupScreen';
+import { LoginScreen } from './navigation/screens/authentication/LoginScreen';
+import { SignupScreen } from './navigation/screens/authentication/SignupScreen';
 import SplashScreen from './navigation/screens/SplashScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import UserMenu from './navigation/screens/components/UserMenu';
+import UserMenu from './components/UserMenu';
 import { Image } from 'react-native';
 import logo from '../frontend/assets/logo2.png';
+
+
 
 const Stack = createStackNavigator();
 
@@ -58,5 +60,6 @@ export default function App() {
     </>
   );
 }
-LogBox.ignoreLogs(['Warning: ...']);
-LogBox.ignoreAllLogs();
+// Cheat
+// LogBox.ignoreLogs(['Warning: ...']);
+// LogBox.ignoreAllLogs();
