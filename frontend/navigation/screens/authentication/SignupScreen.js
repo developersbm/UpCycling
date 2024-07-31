@@ -12,7 +12,7 @@ export const SignupScreen = ({ navigation }) => {
     };
     return (
         <View style={styles.container}>
-            <Image source={require('./../../../assets/logo.png')} style={styles.image} />
+            <Image source={require('./../../../assets/icons/logo.png')} style={styles.image} />
             <Text style={styles.screenTitle}>Create a new account!</Text>
             <Formik
                 initialValues={{ email: '', password: '', confirmPassword: '' }}

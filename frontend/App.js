@@ -6,12 +6,9 @@ import MainContainer from './navigation/mainContainer';
 import { LoginScreen } from './navigation/screens/authentication/LoginScreen';
 import { SignupScreen } from './navigation/screens/authentication/SignupScreen';
 import SplashScreen from './navigation/screens/SplashScreen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import UserMenu from './components/UserMenu';
 import { Image } from 'react-native';
-import logo from '../frontend/assets/logo2.png';
-
-
+import logo from '../frontend/assets/icons/logo2.png';
 
 const Stack = createStackNavigator();
 
@@ -23,7 +20,6 @@ export default function App() {
         <Stack.Navigator  initialRouteName="Splash"> 
           <Stack.Screen 
             name="Splash" 
-            
             component={SplashScreen} 
             options={{ headerShown: false }}
           />

@@ -26,7 +26,7 @@ const UserMenu = () => {
         <View style={styles.container}>
             <TouchableOpacity onPress={toggleMenu}>
                 <Image
-                    source={require('../assets/profile.png')}
+                    source={require('../assets/icons/profile.png')}
                     style={{ width: 100, height: 40, resizeMode: 'contain' }}
                 />
             </TouchableOpacity>

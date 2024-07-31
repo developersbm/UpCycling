@@ -12,7 +12,7 @@ export const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('./../../../assets/logo.png')} style={styles.image} />
+      <Image source={require('./../../../assets/icons/logo.png')} style={styles.image} />
       <Text style={styles.screenTitle}>Welcome back!</Text>
       <Formik
         initialValues={{ email: '', password: '' }}

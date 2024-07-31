@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, View, Image, StyleSheet } from 'react-native';
+import { Animated, View, StyleSheet } from 'react-native';
 
 const SplashScreen = ({ navigation }) => {
     const logoOpacity = useRef(new Animated.Value(0)).current;
@@ -17,7 +17,7 @@ const SplashScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Animated.Image 
-                source={require('./../../assets/logo.png')}
+                source={require('./../../assets/icons/logo.png')}
                 style={[styles.logo, { opacity: logoOpacity }]}            />
         </View>
     );

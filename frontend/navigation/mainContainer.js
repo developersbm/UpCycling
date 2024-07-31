@@ -1,12 +1,13 @@
+// navigation/mainContainer.js
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import PostScreen from './screens/PostScreen';
-import PlaylistScreen from './screens/PlaylistScreen';
+import SearchScreen from './screens/SearchScreen';
 import SocialScreen from './screens/SocialScreen';
+import PlayListStack from './PlayListStack';
 
 const playListName = "PlayList";
-const postName = "Post";
+const SearchName = "Search";
 const socialName = "Social";
 
 const Tab = createBottomTabNavigator();
@@ -17,12 +18,11 @@ function MainContainer() {
       initialRouteName={playListName}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          // Define icon name based on the route
           let iconName;
           if (route.name === socialName) {
             iconName = focused ? 'people' : 'people-outline';
-          } else if (route.name === postName) {
-            iconName = focused ? 'add-circle' : 'add-circle-outline';
+          } else if (route.name === SearchName) {
+            iconName = focused ? 'search' : 'search-outline';
           } else if (route.name === playListName) {
             iconName = focused ? 'musical-notes' : 'musical-notes-outline';
           }
@@ -36,8 +36,8 @@ function MainContainer() {
       })}
     >
       <Tab.Screen name={socialName} component={SocialScreen} />
-      <Tab.Screen name={postName} component={PostScreen} />
-      <Tab.Screen name={playListName} component={PlaylistScreen} />
+      <Tab.Screen name={SearchName} component={SearchScreen} />
+      <Tab.Screen name={playListName} component={PlayListStack} /> 
     </Tab.Navigator>
   );
 }
