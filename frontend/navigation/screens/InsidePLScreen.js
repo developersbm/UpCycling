@@ -1,6 +1,7 @@
 // navigation/screens/InsidePLScreen.js
 import React from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView, ScrollView } from 'react-native';
+import ButtonImg from '../../components/ButtonImg';
 
 const InsidePLScreen = ({ route }) => {
   const { img, title, ingredients } = route.params;

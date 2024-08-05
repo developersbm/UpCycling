@@ -17,7 +17,7 @@ export default function App() {
     <>
       <StatusBar hidden={true} />
       <NavigationContainer>
-        <Stack.Navigator  initialRouteName="Splash"> 
+        <Stack.Navigator  initialRouteName="MainContainer"> 
           <Stack.Screen 
             name="Splash" 
             component={SplashScreen} 
