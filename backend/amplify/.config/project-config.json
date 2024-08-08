@@ -1,0 +1,17 @@
+{
+  "projectName": "backend",
+  "version": "3.1",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react-native",
+    "config": {
+      "SourceDir": "../frontend",
+      "DistributionDir": ".",
+      "BuildCommand": "echo \"Build not required\"",
+      "StartCommand": "echo \"Start not required\""
+    }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
+}
