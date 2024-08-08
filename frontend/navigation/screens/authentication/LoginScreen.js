@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet,TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Formik } from 'formik';
-import { Image } from 'react-native';
 
 export const LoginScreen = ({ navigation }) => {
   const [errorState] = useState('');
 
   const handleLogin = async (values) => {
-    console.log("Handled...")
+    console.log("Handled login with values:", values);
   };
 
   return (
@@ -15,20 +14,29 @@ export const LoginScreen = ({ navigation }) => {
       <Image source={require('./../../../assets/icons/logo.png')} style={styles.image} />
       <Text style={styles.screenTitle}>Welcome back!</Text>
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={{ username: '', password: '' }}
         onSubmit={handleLogin}
+        validate={(values) => {
+          const errors = {};
+          if (!values.username) {
+            errors.username = 'Username is required';
+          }
+          if (!values.password) {
+            errors.password = 'Password is required';
+          }
+          return errors;
+        }}
       >
         {({ handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
           <View>
             <TextInput
               style={styles.input}
-              onChangeText={handleChange('email')}
-              onBlur={handleBlur('email')}
-              value={values.email}
-              placeholder="Enter email"
-              keyboardType="email-address"
+              onChangeText={handleChange('username')}
+              onBlur={handleBlur('username')}
+              value={values.username}
+              placeholder="Enter username"
             />
-            {touched.email && errors.email && <Text>{errors.email}</Text>}
+            {touched.username && errors.username && <Text style={styles.errorText}>{errors.username}</Text>}
             <TextInput
               style={styles.input}
               onChangeText={handleChange('password')}
@@ -37,8 +45,8 @@ export const LoginScreen = ({ navigation }) => {
               placeholder="Enter password"
               secureTextEntry
             />
-            {touched.password && errors.password && <Text>{errors.password}</Text>}
-            {errorState !== '' && <Text>{errorState}</Text>}
+            {touched.password && errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+            {errorState !== '' && <Text style={styles.errorText}>{errorState}</Text>}
             <TouchableOpacity onPress={handleSubmit} style={styles.button}>
               <Text style={styles.buttonText}>Log In</Text>
             </TouchableOpacity>
@@ -116,5 +124,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     fontStyle: 'italic',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 10,
   },
 });

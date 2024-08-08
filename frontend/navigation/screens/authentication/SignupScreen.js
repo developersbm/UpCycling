@@ -1,25 +1,63 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
-import { TouchableOpacity} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 
 export const SignupScreen = ({ navigation }) => {
-    const [errorState] = useState('');
+    const [errorState, setErrorState] = useState('');
 
     const handleSignup = async (values) => {
-        console.log("Created user");
+        console.log("Created user", values);
     };
+
+    const handleGoogleSignup = () => {
+        console.log("Google Signup");
+    };
+
     return (
         <View style={styles.container}>
             <Image source={require('./../../../assets/icons/logo.png')} style={styles.image} />
             <Text style={styles.screenTitle}>Create a new account!</Text>
             <Formik
-                initialValues={{ email: '', password: '', confirmPassword: '' }}
+                initialValues={{ username: '', email: '', password: '', confirmPassword: '' }}
                 onSubmit={handleSignup}
+                validate={(values) => {
+                    const errors = {};
+                    if (!values.username) {
+                        errors.username = 'Username is required';
+                    }
+                    if (!values.email) {
+                        errors.email = 'Email is required';
+                    } else if (
+                        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                    ) {
+                        errors.email = 'Invalid email address';
+                    }
+                    if (!values.password) {
+                        errors.password = 'Password is required';
+                    } else if (values.password.length < 6) {
+                        errors.password = 'Password must be at least 6 characters';
+                    }
+                    if (!values.confirmPassword) {
+                        errors.confirmPassword = 'Please confirm your password';
+                    } else if (values.password !== values.confirmPassword) {
+                        errors.confirmPassword = 'Passwords do not match';
+                    }
+                    return errors;
+                }}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                     <View>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={handleChange('username')}
+                            onBlur={handleBlur('username')}
+                            value={values.username}
+                            placeholder="Username"
+                        />
+                        {touched.username && errors.username && <Text style={styles.errorText}>{errors.username}</Text>}
+
                         <TextInput
                             style={styles.input}
                             onChangeText={handleChange('email')}
@@ -28,7 +66,8 @@ export const SignupScreen = ({ navigation }) => {
                             placeholder="Email"
                             keyboardType="email-address"
                         />
-                        {touched.email && errors.email && <Text>{errors.email}</Text>}
+                        {touched.email && errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+
                         <TextInput
                             style={styles.input}
                             onChangeText={handleChange('password')}
@@ -37,7 +76,8 @@ export const SignupScreen = ({ navigation }) => {
                             placeholder="Password"
                             secureTextEntry
                         />
-                        {touched.password && errors.password && <Text>{errors.password}</Text>}
+                        {touched.password && errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+
                         <TextInput
                             style={styles.input}
                             onChangeText={handleChange('confirmPassword')}
@@ -46,7 +86,8 @@ export const SignupScreen = ({ navigation }) => {
                             placeholder="Confirm Password"
                             secureTextEntry
                         />
-                        {touched.confirmPassword && errors.confirmPassword && <Text>{errors.confirmPassword}</Text>}
+                        {touched.confirmPassword && errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword}</Text>}
+
                         <Text>{errorState}</Text>
                         <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                             <Text style={styles.buttonText}>Sign Up</Text>
@@ -54,7 +95,11 @@ export const SignupScreen = ({ navigation }) => {
                     </View>
                 )}
             </Formik>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.button}>
+            <TouchableOpacity onPress={handleGoogleSignup} style={styles.googleButton}>
+                <Image source={require('./../../../assets/icons/google.png')} style={styles.googleIcon} />
+                <Text style={styles.buttonText}>Sign Up with Google</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.loginButton}>
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
         </View>
@@ -81,17 +126,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderRadius: 15,
         backgroundColor: '#fff',
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        width: 300, 
-        alignSelf: 'center',    
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 300,
+        alignSelf: 'center',
     },
     screenTitle: {
         fontSize: 24,
         fontWeight: '800',
         marginBottom: 20,
         textAlign: 'center',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)', 
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 2,
     },
@@ -109,18 +154,67 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5,
         marginBottom: 10,
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        width: 150, 
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 250,
         alignSelf: 'center',
-    },    
+    },
+    googleButton: {
+        backgroundColor: 'white',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 25,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 3.85,
+        elevation: 5,
+        marginBottom: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 250,
+        alignSelf: 'center',
+        flexDirection: 'row',
+    },
+    googleIcon: {
+        width: 24,
+        height: 24,
+        marginRight: 10,
+    },
+    loginButton: {
+        backgroundColor: 'blue',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 25,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        marginBottom: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 250,
+        alignSelf: 'center',
+    },
     buttonText: {
         color: 'white',
         fontSize: 18,
         textAlign: 'center',
         fontWeight: 'bold',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)', 
-        textShadowOffset: { width: 2, height: 2 },
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: 2, height: 1 },
         textShadowRadius: 3,
     },
+    errorText: {
+        color: 'red',
+        marginBottom: 10,
+        alignSelf: 'center',
+    }
 });

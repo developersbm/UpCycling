@@ -9,6 +9,10 @@ import SplashScreen from './navigation/screens/SplashScreen';
 import UserMenu from './components/UserMenu';
 import { Image } from 'react-native';
 import logo from '../frontend/assets/icons/logo2.png';
+import { Amplify } from 'aws-amplify';
+import amplifyconfig from './amplifyconfiguration.json';
+
+Amplify.configure(amplifyconfig);
 
 const Stack = createStackNavigator();
 
@@ -17,7 +21,7 @@ export default function App() {
     <>
       <StatusBar hidden={true} />
       <NavigationContainer>
-        <Stack.Navigator  initialRouteName="MainContainer"> 
+        <Stack.Navigator  initialRouteName="Splash"> 
           <Stack.Screen 
             name="Splash" 
             component={SplashScreen} 
