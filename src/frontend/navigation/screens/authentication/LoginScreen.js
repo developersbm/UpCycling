@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { Formik } from 'formik';
-import { signIn } from '../../../services/authService';
+import { signInUser } from './authService';
 
 export const LoginScreen = ({ navigation }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -9,12 +9,23 @@ export const LoginScreen = ({ navigation }) => {
   const handleLogin = async (values) => {
     setIsSubmitting(true);
     try {
-      await signIn(values.username, values.password);
+      const { username, password } = values;
+
+      // Log the values being used for sign-in
+      console.log('Login attempt with:', { username, password });
+
+      // Ensure values are valid
+      if (!username || !password) {
+        throw new Error('Username and password are required');
+      }
+
+      await signInUser(username, password);
       navigation.reset({
         index: 0,
         routes: [{ name: 'MainContainer' }],
       });
     } catch (error) {
+      console.error('Login Error:', error);
       Alert.alert('Login Error', error.message);
     } finally {
       setIsSubmitting(false);
@@ -75,7 +86,6 @@ export const LoginScreen = ({ navigation }) => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {

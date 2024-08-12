@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { Formik } from 'formik';
-import { signUp } from '../../../services/authService';
+import { signUpUser } from './authService';
 
 export const SignupScreen = ({ navigation }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -10,7 +10,7 @@ export const SignupScreen = ({ navigation }) => {
     const handleSignup = async (values) => {
         setIsSubmitting(true);
         try {
-            await signUp(values.username, values.email, values.password);
+            await signUpUser(values.username, values.email, values.password);
             Alert.alert(
                 'Success',
                 'Account created successfully. Please verify your email.',

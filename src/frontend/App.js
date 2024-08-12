@@ -46,7 +46,6 @@ const UnauthenticatedStack = () => (
 );
 
 // Change to unauthenticated if you want to access MainContainer
-
 const RootNavigator = () => {
   const { authStatus } = useAuthenticator();
 
