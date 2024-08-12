@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Formik } from 'formik';
-import { TouchableOpacity } from 'react-native';
-import { Image } from 'react-native';
+import { signUp } from '../../../services/authService';
 
 export const SignupScreen = ({ navigation }) => {
     const [errorState, setErrorState] = useState('');
 
     const handleSignup = async (values) => {
-        console.log("Created user", values);
-    };
-
-    const handleGoogleSignup = () => {
-        console.log("Google Signup");
+        try {
+            await signUp(values.username, values.email, values.password);
+            navigation.navigate('Login');
+        } catch (error) {
+            setErrorState(error.message);
+        }
     };
 
     return (
@@ -95,10 +95,6 @@ export const SignupScreen = ({ navigation }) => {
                     </View>
                 )}
             </Formik>
-            <TouchableOpacity onPress={handleGoogleSignup} style={styles.googleButton}>
-                <Image source={require('./../../../assets/icons/google.png')} style={styles.googleIcon} />
-                <Text style={styles.buttonText}>Sign Up with Google</Text>
-            </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.loginButton}>
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>

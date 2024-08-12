@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws-amplify/react-native": "^1.1.4",
+    "@aws-amplify/ui-react-native": "^2.2.3",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-community/netinfo": "^11.3.2",
     "@react-navigation/bottom-tabs": "^6.6.1",
@@ -22,6 +23,9 @@
     "react": "18.2.0",
     "react-native": "0.74.3",
     "react-native-get-random-values": "^1.11.0",
+    "react-native-safe-area-context": "^4.10.5",
+    "react-native-screens": "3.31.1",
+    "react-native-url-polyfill": "^2.0.0",
     "react-navigation": "^5.0.0"
   },
   "devDependencies": {

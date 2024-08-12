@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Formik } from 'formik';
+import { signIn } from '../../../services/authService';
 
 export const LoginScreen = ({ navigation }) => {
-  const [errorState] = useState('');
+  const [errorState, setErrorState] = useState('');
 
   const handleLogin = async (values) => {
-    console.log("Handled login with values:", values);
+    try {
+      await signIn(values.username, values.password);
+      navigation.navigate('MainContainer');
+    } catch (error) {
+      setErrorState(error.message);
+    }
   };
 
   return (
