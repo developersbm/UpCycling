@@ -1,8 +1,7 @@
 import { Auth } from 'aws-amplify';
 
-// Configure Amplify here or ensure it is configured elsewhere in your app
-// import amplifyconfig from './amplifyconfiguration.json';
-// Amplify.configure(amplifyconfig);
+// Log Auth object to ensure it's imported correctly
+console.log('Auth:', Auth);
 
 // Sign up a new user
 export const signUp = async (username, email, password) => {

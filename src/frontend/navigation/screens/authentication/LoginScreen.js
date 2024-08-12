@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { Formik } from 'formik';
 import { signIn } from '../../../services/authService';
 
 export const LoginScreen = ({ navigation }) => {
-  const [errorState, setErrorState] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleLogin = async (values) => {
+    setIsSubmitting(true);
     try {
       await signIn(values.username, values.password);
-      navigation.navigate('MainContainer');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'MainContainer' }],
+      });
     } catch (error) {
-      setErrorState(error.message);
+      Alert.alert('Login Error', error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -34,33 +40,34 @@ export const LoginScreen = ({ navigation }) => {
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
-          <View>
+          <View style={styles.formContainer}>
             <TextInput
-              style={styles.input}
+              style={[styles.input, touched.username && errors.username ? styles.errorInput : null]}
               onChangeText={handleChange('username')}
               onBlur={handleBlur('username')}
               value={values.username}
               placeholder="Enter username"
+              autoCapitalize="none"
             />
             {touched.username && errors.username && <Text style={styles.errorText}>{errors.username}</Text>}
             <TextInput
-              style={styles.input}
+              style={[styles.input, touched.password && errors.password ? styles.errorInput : null]}
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
               placeholder="Enter password"
               secureTextEntry
+              autoCapitalize="none"
             />
             {touched.password && errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
-            {errorState !== '' && <Text style={styles.errorText}>{errorState}</Text>}
-            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-              <Text style={styles.buttonText}>Log In</Text>
+            <TouchableOpacity onPress={handleSubmit} style={[styles.button, isSubmitting ? styles.disabledButton : null]} disabled={isSubmitting}>
+              <Text style={styles.buttonText}>{isSubmitting ? 'Logging In...' : 'Log In'}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')} style={styles.button}>
-              <Text style={styles.buttonText}>Sign Up</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')} style={styles.linkButton}>
+              <Text style={styles.linkText}>Sign Up</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('MainContainer')}>
-              <Text style={styles.buttonText2}>Forgot Password?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} style={styles.linkButton}>
+              <Text style={styles.linkText}>Forgot Password?</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -69,70 +76,71 @@ export const LoginScreen = ({ navigation }) => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
     justifyContent: 'center',
-    marginBottom: 50
+    backgroundColor: '#f5f5f5',
   },
   image: {
     width: 180,
     height: 180,
     alignSelf: 'center',
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 15,
-    backgroundColor: '#fff',
-  },
   screenTitle: {
     fontSize: 24,
     fontWeight: '800',
     marginBottom: 20,
-    marginTop: -20,
     textAlign: 'center',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)', 
-    textShadowOffset: { width: 0.5, height: 0.5 },
-    textShadowRadius: 1,
+    color: '#333',
+  },
+  formContainer: {
+    marginTop: 20,
+  },
+  input: {
+    height: 45,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+  },
+  errorInput: {
+    borderColor: 'red',
   },
   button: {
-    backgroundColor: 'red',
-    paddingVertical: 12,
-    paddingHorizontal: 10,
+    backgroundColor: '#ff5c5c',
+    paddingVertical: 15,
     borderRadius: 25,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 10,
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    width: 170, 
-    alignSelf: 'center',
+    elevation: 5,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 19,
-    textAlign: 'center',
+    color: '#fff',
+    fontSize: 18,
     fontWeight: 'bold',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)', 
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 3,
   },
-  buttonText2: {
-    color: 'black',
+  disabledButton: {
+    backgroundColor: '#d9534f',
+  },
+  linkButton: {
+    marginBottom: 10,
+    alignSelf: 'center',
+  },
+  linkText: {
+    color: '#007bff',
     fontSize: 16,
-    textAlign: 'center',
-    fontStyle: 'italic',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
   errorText: {
     color: 'red',
     marginBottom: 10,
+    fontSize: 14,
   },
 });

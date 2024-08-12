@@ -2,6 +2,7 @@
 .env
 
 #amplify-do-not-edit-begin
+.vscode/
 amplify/\#current-cloud-backend
 amplify/.config/local-*
 amplify/logs
