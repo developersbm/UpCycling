@@ -8,6 +8,7 @@ import MainContainer from './navigation/mainContainer';
 import { LoginScreen } from './navigation/screens/authentication/LoginScreen';
 import { SignupScreen } from './navigation/screens/authentication/SignupScreen';
 import ForgotPasswordScreen from './navigation/screens/authentication/ForgotPasswordScreen';
+import VerificationScreen from './navigation/screens/authentication/VerificationScreen';
 import SplashScreen from './navigation/screens/SplashScreen';
 import UserMenu from './components/UserMenu';
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react-native";
@@ -19,9 +20,9 @@ console.log('AWS Config:', awsconfig); // Debugging
 Amplify.configure(awsconfig);
 
 const Stack = createStackNavigator();
-
+// Change this in the future
 const AuthenticatedStack = () => (
-  <Stack.Navigator initialRouteName="MainContainer" >
+  <Stack.Navigator initialRouteName="MainContainer">
     <Stack.Screen
       name="MainContainer"
       component={MainContainer}
@@ -48,7 +49,26 @@ const UnauthenticatedStack = () => (
     <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
     <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
     <Stack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
+    <Stack.Screen name="Verification" component={VerificationScreen} options={{ headerShown: false }} />
     <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
+    <Stack.Screen
+      name="MainContainer"
+      component={MainContainer}
+      options={{
+        headerTitle: 'Feed',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20, 
+        },
+        headerLeft: () => (
+          <Image source={logo} style={{ width: 160, height: 70, resizeMode: 'cover', marginTop: -20, marginLeft: 15 }} />
+        ),
+        headerRight: () => <UserMenu />,
+        headerStyle: {
+          height: 100,
+        }
+      }}
+    />
   </Stack.Navigator>
 );
 
@@ -58,7 +78,7 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      {authStatus === 'unauthenticated' ? <AuthenticatedStack /> : <UnauthenticatedStack />}
+      {authStatus === 'authenticated' ? <AuthenticatedStack /> : <UnauthenticatedStack />}
     </NavigationContainer>
   );
 };

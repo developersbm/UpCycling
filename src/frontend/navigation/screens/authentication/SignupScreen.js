@@ -10,19 +10,24 @@ export const SignupScreen = ({ navigation }) => {
     const handleSignup = async (values) => {
         setIsSubmitting(true);
         try {
-            await signUpUser(values.username, values.email, values.password);
+            await signUpUser({
+                username: values.username,
+                email: values.email,
+                password: values.password
+            });
+    
             Alert.alert(
                 'Success',
                 'Account created successfully. Please verify your email.',
-                [{ text: 'OK', onPress: () => navigation.navigate('Login') }]
+                [{ text: 'OK', onPress: () => navigation.navigate('Verification', { username: values.username }) }]
             );
         } catch (error) {
             setErrorState(error.message);
         } finally {
             setIsSubmitting(false);
         }
-    };
-
+    };    
+    
     return (
         <View style={styles.container}>
             <Image source={require('./../../../assets/icons/logo.png')} style={styles.image} />
