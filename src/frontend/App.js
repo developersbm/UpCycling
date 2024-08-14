@@ -21,16 +21,23 @@ Amplify.configure(awsconfig);
 const Stack = createStackNavigator();
 
 const AuthenticatedStack = () => (
-  <Stack.Navigator initialRouteName="MainContainer">
+  <Stack.Navigator initialRouteName="MainContainer" >
     <Stack.Screen
       name="MainContainer"
       component={MainContainer}
       options={{
-        headerTitle: '',
+        headerTitle: 'Feed',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20, 
+        },
         headerLeft: () => (
-          <Image source={logo} style={{ width: 150, height: 60, resizeMode: 'cover' }} />
+          <Image source={logo} style={{ width: 160, height: 70, resizeMode: 'cover', marginTop: -20, marginLeft: 15 }} />
         ),
         headerRight: () => <UserMenu />,
+        headerStyle: {
+          height: 100,
+        }
       }}
     />
   </Stack.Navigator>
@@ -51,7 +58,7 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      {authStatus === 'authenticated' ? <AuthenticatedStack /> : <UnauthenticatedStack />}
+      {authStatus === 'unauthenticated' ? <AuthenticatedStack /> : <UnauthenticatedStack />}
     </NavigationContainer>
   );
 };

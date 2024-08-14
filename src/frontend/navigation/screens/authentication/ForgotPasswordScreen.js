@@ -5,7 +5,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
   const handlePasswordReset = () => {
     // Here you would handle the password reset logic
     // For now, we just navigate to MainContainer
-    navigation.navigate('MainContainer');
+    navigation.navigate('Login');
   };
 
   return (
