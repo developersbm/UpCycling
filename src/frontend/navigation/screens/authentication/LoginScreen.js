@@ -10,27 +10,28 @@ export const LoginScreen = ({ navigation }) => {
     setIsSubmitting(true);
     try {
       const { username, password } = values;
-
+  
       // Log the values being used for sign-in
-      console.log('Login attempt with:', { username, password });
-
+      console.log('Login attempt with:', username, password);
+  
       // Ensure values are valid
       if (!username || !password) {
         throw new Error('Username and password are required');
       }
-
-      await signInUser(username, password);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'MainContainer' }],
-      });
+  
+      // Await the signInUser call and check for successful login
+      await signInUser({ username, password });
+  
+      // Navigate to MainContainer upon successful login
+      navigation.navigate('MainContainer')
+  
     } catch (error) {
       console.error('Login Error:', error);
       Alert.alert('Login Error', error.message);
     } finally {
       setIsSubmitting(false);
     }
-  };
+  };  
 
   return (
     <View style={styles.container}>
