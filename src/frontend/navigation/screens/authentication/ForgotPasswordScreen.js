@@ -4,37 +4,36 @@ import { Formik } from 'formik';
 import { requestForgotPassword, confirmForgotPassword } from './authService';
 
 const ForgotPasswordScreen = ({ navigation }) => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1); // Step 1 is requesting the reset code, Step 2 is resetting the password
   const [username, setUsername] = useState('');
 
+  // Handle request for password reset code
   const handlePasswordResetRequest = async (values) => {
     try {
-      await requestForgotPassword(values.username);
-      setUsername(values.username); // Save the username for the confirmation step
-      setStep(2);
-      Alert.alert('Success', 'A password reset code has been sent to your email.');
+        // Assume `requestForgotPassword` sends the reset code to the user's email
+        const resetDetails = await requestForgotPassword(values.username);
+        setUsername(values.username); // Save the username for step 2
+  
+        // Now navigate to the NewPassword screen and pass username and resetDetails as params
+        navigation.navigate('NewPassword', { username: values.username, resetDetails });
+        
+        Alert.alert('Success', `A password reset code has been sent to ${resetDetails.destination}.`);
     } catch (error) {
-      Alert.alert('Error', error.message);
+        Alert.alert('Error', error.message);
     }
-  };
-
-  const handlePasswordResetConfirm = async (values) => {
-    try {
-      await confirmForgotPassword(username, values.code, values.newPassword);
-      Alert.alert('Success', 'Password has been reset successfully.');
-      navigation.navigate('Login');
-    } catch (error) {
-      Alert.alert('Error', error.message);
-    }
-  };
+};
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{step === 1 ? 'Forgot Password' : 'Reset Password'}</Text>
 
       <Formik
-        initialValues={step === 1 ? { username: '' } : { code: '', newPassword: '' }}
-        onSubmit={step === 1 ? handlePasswordResetRequest : handlePasswordResetConfirm}
+        initialValues={
+          step === 1
+            ? { username: '' }
+            : { code: '', newPassword: '', confirmPassword: '' }
+        }
+        onSubmit={handlePasswordResetRequest}
         validate={(values) => {
           const errors = {};
           if (step === 1 && !values.username) {
@@ -47,6 +46,9 @@ const ForgotPasswordScreen = ({ navigation }) => {
             if (!values.newPassword) {
               errors.newPassword = 'New password is required';
             }
+            if (!values.confirmPassword) {
+              errors.confirmPassword = 'Confirm password is required';
+            }
           }
           return errors;
         }}
@@ -54,6 +56,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <View>
             {step === 1 ? (
+              // Step 1: Request Reset Code
               <View>
                 <TextInput
                   style={[styles.input, touched.username && errors.username ? styles.errorInput : null]}
@@ -69,6 +72,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
             ) : (
+              // Step 2: Reset Password
               <View>
                 <TextInput
                   style={[styles.input, touched.code && errors.code ? styles.errorInput : null]}
@@ -88,6 +92,16 @@ const ForgotPasswordScreen = ({ navigation }) => {
                   secureTextEntry
                 />
                 {touched.newPassword && errors.newPassword && <Text style={styles.errorText}>{errors.newPassword}</Text>}
+
+                <TextInput
+                  style={[styles.input, touched.confirmPassword && errors.confirmPassword ? styles.errorInput : null]}
+                  onChangeText={handleChange('confirmPassword')}
+                  onBlur={handleBlur('confirmPassword')}
+                  value={values.confirmPassword}
+                  placeholder="Confirm new password"
+                  secureTextEntry
+                />
+                {touched.confirmPassword && errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword}</Text>}
 
                 <TouchableOpacity onPress={handleSubmit} style={styles.button}>
                   <Text style={styles.buttonText}>Reset Password</Text>
