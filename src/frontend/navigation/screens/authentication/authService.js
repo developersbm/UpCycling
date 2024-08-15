@@ -2,10 +2,10 @@ import {
     signUp as amplifySignUp, 
     confirmSignUp as amplifyConfirmSignUp, 
     resendSignUpCode as amplifyResendSignUpCode,
-    signIn as amplifySignIn,
+    signIn,
     signOut as amplifySignOut,
-    forgotPassword as amplifyForgotPassword,
-    forgotPasswordSubmit as amplifyForgotPasswordSubmit,
+    resetPassword,
+    confirmResetPassword,
     fetchAuthSession as amplifyFetchAuthSession,
     getCurrentUser as amplifyGetCurrentUser
 } from 'aws-amplify/auth';
@@ -92,10 +92,20 @@ export const signOutUser = async () => {
 };
 
 // Forgot password request
-export const requestForgotPassword = async (username) => {
+export const requestForgotPassword = async (username, clientMetadata = {}) => {
     try {
-        await amplifyForgotPassword(username);
-        console.log('Password reset request sent successfully.');
+        const result = await resetPassword({
+            username,
+            options: {
+                clientMetadata,
+            },
+        });
+        
+        // Extract delivery details if necessary
+        const { attributeName, deliveryMedium, destination } = result.nextStep.codeDeliveryDetails;
+        
+        console.log('Password reset request sent successfully:', { attributeName, deliveryMedium, destination });
+        return { attributeName, deliveryMedium, destination };
     } catch (error) {
         console.error('Error requesting password reset:', error);
         throw new Error(error.message);
@@ -103,9 +113,16 @@ export const requestForgotPassword = async (username) => {
 };
 
 // Confirm password reset with the code sent to email or phone
-export const confirmForgotPassword = async (username, confirmationCode, newPassword) => {
+export const confirmForgotPassword = async (username, confirmationCode, newPassword, clientMetadata = {}) => {
     try {
-        await amplifyForgotPasswordSubmit(username, confirmationCode, newPassword);
+        await confirmResetPassword({
+            username,
+            newPassword,
+            confirmationCode,
+            options: {
+                clientMetadata,
+            }
+        });
         console.log('Password reset successfully.');
     } catch (error) {
         console.error('Error confirming password reset:', error);

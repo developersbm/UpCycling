@@ -10,6 +10,7 @@ import { SignupScreen } from './navigation/screens/authentication/SignupScreen';
 import ForgotPasswordScreen from './navigation/screens/authentication/ForgotPasswordScreen';
 import VerificationScreen from './navigation/screens/authentication/VerificationScreen';
 import SplashScreen from './navigation/screens/SplashScreen';
+import NewPasswordScreen from './navigation/screens/authentication/NewPasswordScreen';
 import UserMenu from './components/UserMenu';
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react-native";
 import logo from '../frontend/assets/icons/logo2.png';
@@ -51,6 +52,7 @@ const UnauthenticatedStack = () => (
     <Stack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
     <Stack.Screen name="Verification" component={VerificationScreen} options={{ headerShown: false }} />
     <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ headerShown: false }} />
+    <Stack.Screen name="NewPassword" component={NewPasswordScreen} options={{ headerShown: false }} />
     <Stack.Screen
       name="MainContainer"
       component={MainContainer}
@@ -72,7 +74,7 @@ const UnauthenticatedStack = () => (
   </Stack.Navigator>
 );
 
-// Change to unauthenticated if you want to access MainContainer
+// Change to unauthenticated if you want to access MainContainer (Needs to be fixed)
 const RootNavigator = () => {
   const { authStatus } = useAuthenticator();
 
