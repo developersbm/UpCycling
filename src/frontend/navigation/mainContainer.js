@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator();
 function MainContainer() {
   return (
     <Tab.Navigator
-      initialRouteName={socialName} // Set the initial route to SocialScreen
+      initialRouteName={socialName}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;

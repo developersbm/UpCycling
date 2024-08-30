@@ -1,10 +1,21 @@
 // navigation/screens/InsidePLScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, ScrollView } from 'react-native';
-import ButtonImg from '../../components/ButtonImg';
+import { View, Text, StyleSheet, Image, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import ButtonImg from '../../../components/ButtonImg';
 
 const InsidePLScreen = ({ route }) => {
   const { img, title, ingredients } = route.params;
+  const navigation = useNavigation();
+
+  const handleChatbotPress = () => {
+    navigation.navigate('ChatbotScreen');
+  };
+
+  const handleCameraPress = () => {
+    navigation.navigate('CameraScreen');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -23,6 +34,14 @@ const InsidePLScreen = ({ route }) => {
           ))}
         </View>
       </ScrollView>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleChatbotPress}>
+          <Ionicons name="chatbox-ellipses-outline" size={30} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button2} onPress={handleCameraPress}>
+          <Ionicons name="camera-outline" size={30} color="#fff" />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -68,5 +87,28 @@ const styles = StyleSheet.create({
   },
   ingredientTitle: {
     fontSize: 18,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 20,
+  },
+  button: {
+    backgroundColor: 'red',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  button2: {
+    backgroundColor: '#007BFF',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: 5,
   },
 });

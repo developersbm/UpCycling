@@ -72,6 +72,24 @@ const playlistData = [
         }
       ]
     },
+    {
+      title: "PlayList5",
+      img: require('../assets/playlistimg/wool.png'),
+      ingredients: [
+        { 
+          title: "Wool",   
+          img: require('../assets/playlistimg/wool.png')
+        },
+        { 
+          title: "Rock",   
+          img: require('../assets/playlistimg/rock.png')
+        },
+        { 
+          title: "Tape",   
+          img: require('../assets/playlistimg/rock.png')
+        }
+      ]
+    },
   ];
   
   export default playlistData;
