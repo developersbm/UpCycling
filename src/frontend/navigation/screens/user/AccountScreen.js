@@ -1,7 +1,7 @@
 // navigation/screens/AccountScreen.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { getAuthenticatedUser, signOutUser } from '../authentication/authService';
+import { getAuthenticatedUser, signOutUser,  } from '../authentication/authService';
 
 const AccountScreen = ({ navigation }) => {
   const [username, setUsername] = useState(null);
@@ -34,12 +34,25 @@ const AccountScreen = ({ navigation }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await handleDeleteAttributes();
+      navigation.navigate('Login');
+    } catch (err) {
+      setError('Failed to delete account.');
+      console.error(err);
+    }
+  };
+
   // Fix username Fetching
   return (
     <View style={styles.container}>
       <Text style={styles.usernameText}>Welcome, USERNAME ERROR!</Text> 
       <TouchableOpacity onPress={handleSignOut} style={styles.button}>
         <Text style={styles.buttonText}>Sign Out</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleDelete} style={styles.button}>
+        <Text style={styles.buttonText}>Delete Account</Text>
       </TouchableOpacity>
     </View>
   );

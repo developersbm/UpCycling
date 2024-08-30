@@ -7,8 +7,10 @@ import {
     resetPassword,
     confirmResetPassword,
     fetchAuthSession as amplifyFetchAuthSession,
-    getCurrentUser as amplifyGetCurrentUser
+    getCurrentUser as amplifyGetCurrentUser,
+    deleteUser
 } from 'aws-amplify/auth';
+
 
 // Sign up a new user
 export const signUpUser = async ({ username, email, password }) => {
@@ -143,3 +145,8 @@ export const getAuthenticatedUser = async () => {
         throw new Error(error.message);
     }
 };
+
+// Delete user
+export const handleDeleteAttributes = async ({ attributes }) => {
+  await deleteUser();
+}

@@ -1,8 +1,8 @@
-// navigation/PlayListStack.js
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import PlaylistScreen from './screens/PlaylistScreen';
-import InsidePLScreen from './screens/InsidePLScreen';
+import InsidePLScreen from './screens/albumn/InsidePLScreen';
+import ChatbotScreen from './screens/albumn/ChatbotScreen';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -14,8 +14,8 @@ function PlayListStack() {
       screenOptions={({ route, navigation }) => ({
         headerStyle: { backgroundColor: '#fff' },
         headerTitle: '',
-        headerShown: route.name === 'InsidePLScreen' ? true : false, // Only show header on InsidePLScreen
-        headerLeft: route.name === 'InsidePLScreen' ? () => (
+        headerShown: route.name === 'InsidePLScreen' || route.name === 'ChatbotScreen' ? true : false,
+        headerLeft: route.name === 'InsidePLScreen' || route.name === 'ChatbotScreen' ? () => (
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerButton}>
             <Ionicons name="arrow-back" size={24} color="black" />
           </TouchableOpacity>
@@ -24,6 +24,7 @@ function PlayListStack() {
     >
       <Stack.Screen name="PlaylistScreen" component={PlaylistScreen} />
       <Stack.Screen name="InsidePLScreen" component={InsidePLScreen} />
+      <Stack.Screen name="ChatbotScreen" component={ChatbotScreen} />
     </Stack.Navigator>
   );
 }
