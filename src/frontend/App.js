@@ -3,7 +3,6 @@ import { StatusBar, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Amplify } from "aws-amplify";
-import awsconfig from './aws-exports';
 import MainContainer from './navigation/mainContainer';
 import { LoginScreen } from './navigation/screens/authentication/LoginScreen';
 import { SignupScreen } from './navigation/screens/authentication/SignupScreen';
@@ -14,10 +13,9 @@ import NewPasswordScreen from './navigation/screens/authentication/NewPasswordSc
 import UserMenu from './components/UserMenu';
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react-native";
 import logo from '../frontend/assets/icons/logo2.png';
+import amplifyconfig from './amplifyconfiguration.json';
+Amplify.configure(amplifyconfig);
 console.log('Amplify:', Amplify); // Debugging
-console.log('AWS Config:', awsconfig); // Debugging
-
-Amplify.configure(awsconfig);
 
 const Stack = createStackNavigator();
 // Change this in the future

@@ -11,7 +11,6 @@ export const LoginScreen = ({ navigation }) => {
     try {
       const { username, password } = values;
   
-      // Log the values being used for sign-in
       console.log('Login attempt with:', username, password);
   
       // Ensure values are valid
@@ -20,9 +19,8 @@ export const LoginScreen = ({ navigation }) => {
       }
   
       // Await the signInUser call and check for successful login
-      await signInUser({ username, password });
+      await signInUser( username, password );
   
-      // Navigate to MainContainer upon successful login
       navigation.navigate('MainContainer')
   
     } catch (error) {

@@ -87,34 +87,23 @@ export const resendConfirmationCode = async (username) => {
 };
 
 // Log in an existing user
-export const signInUser = async ({ username, password }) => {
-    console.log("AuthService: ", username, password)
+export const signInUser = async (username, password) => {
     try {
-        const { isSignedIn, nextStep } = await signIn({
-            username: username,
-            password: password,
-          });
-          
-        if (!isSignedIn) {
-            throw new Error('Sign-in failed, please complete the next step.');
-        }
+      console.log("Auth: ", username, password);
 
-        console.log('User is signed in:', isSignedIn);
-        console.log('Next step:', nextStep);
-        
-        return { isSignedIn, nextStep };
+      const response = await signIn({
+        username,
+        password
+      });
+      console.log('Sign in successful', response);
+  
+      if (response.isSignedIn) {
+        console.log('User is signed in:', response.isSignedIn);
+      } else {
+        console.log('Next step required:', response.nextStep);
+      }
     } catch (error) {
-        // Handle specific error cases
-        switch (error.code) {
-            case 'UserNotFoundException':
-                throw new Error('User does not exist');
-            case 'NotAuthorizedException':
-                throw new Error('Incorrect username or password');
-            case 'UserNotConfirmedException':
-                throw new Error('User is not confirmed');
-            default:
-                throw new Error(error);
-        }
+      console.error('Login Error:', error.underlyingError);
     }
 };
 
