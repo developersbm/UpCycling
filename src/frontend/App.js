@@ -23,7 +23,7 @@ Amplify.configure(awsconfig);
 const Stack = createStackNavigator();
 // Change this in the future
 const AuthenticatedStack = () => (
-  <Stack.Navigator initialRouteName="MainContainer">
+  <Stack.Navigator initialRouteName="MainContainer" >
     <Stack.Screen
       name="MainContainer"
       component={MainContainer}
