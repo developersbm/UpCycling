@@ -18,6 +18,7 @@
     "@react-navigation/stack": "^6.4.1",
     "aws-amplify": "^6.5.0",
     "axios": "^1.7.6",
+    "dotenv": "^16.4.5",
     "expo": "~51.0.23",
     "expo-status-bar": "~1.12.1",
     "formik": "^2.4.6",

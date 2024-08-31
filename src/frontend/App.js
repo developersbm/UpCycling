@@ -14,7 +14,6 @@ import NewPasswordScreen from './navigation/screens/authentication/NewPasswordSc
 import UserMenu from './components/UserMenu';
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react-native";
 import logo from '../frontend/assets/icons/logo2.png';
-
 console.log('Amplify:', Amplify); // Debugging
 console.log('AWS Config:', awsconfig); // Debugging
 

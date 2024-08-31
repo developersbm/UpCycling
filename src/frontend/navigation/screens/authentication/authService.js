@@ -10,6 +10,7 @@ import {
     getCurrentUser as amplifyGetCurrentUser
 } from 'aws-amplify/auth';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 // Sign up a new user
 export const signUpUser = async ({ username, email, password }) => {
@@ -40,14 +41,17 @@ export const signUpUser = async ({ username, email, password }) => {
     }
 };
 
-const sendUserDataToDynamoDB = async(payload) => {
+const apiEndpoint = Constants.expoConfig.extra.dynamoDbApiEndpoint;
+
+const sendUserDataToDynamoDB = async (payload) => {
     try {
-        const response = await axios.post('https://n8utuhf7md.execute-api.us-east-1.amazonaws.com/Users/RestAPI', payload);
+        const response = await axios.post(`${apiEndpoint}`, payload);
         console.log('User data sent to DynamoDB:', response.data);
     } catch (error) {
         console.error('Error sending data to DynamoDB:', error);
     }
 };
+
 
 // Confirm sign up with the code sent to email
 export const confirmSignUpUser = async (username, confirmationCode) => {
@@ -84,19 +88,34 @@ export const resendConfirmationCode = async (username) => {
 
 // Log in an existing user
 export const signInUser = async ({ username, password }) => {
-    console.log("SignIn details:", username, password);
+    console.log("AuthService: ", username, password)
     try {
-        const user = await signIn({
-          username,
-          password,
-          options: {
-            authFlowType: "USER_PASSWORD_AUTH",
-          },
-        });
-        console.log("user", user);
-      } catch (error) {
-        console.log("Error signing in:", error.underlyingError);
-      }
+        const { isSignedIn, nextStep } = await signIn({
+            username: username,
+            password: password,
+          });
+          
+        if (!isSignedIn) {
+            throw new Error('Sign-in failed, please complete the next step.');
+        }
+
+        console.log('User is signed in:', isSignedIn);
+        console.log('Next step:', nextStep);
+        
+        return { isSignedIn, nextStep };
+    } catch (error) {
+        // Handle specific error cases
+        switch (error.code) {
+            case 'UserNotFoundException':
+                throw new Error('User does not exist');
+            case 'NotAuthorizedException':
+                throw new Error('Incorrect username or password');
+            case 'UserNotConfirmedException':
+                throw new Error('User is not confirmed');
+            default:
+                throw new Error(error);
+        }
+    }
 };
 
 // Log out the current user
