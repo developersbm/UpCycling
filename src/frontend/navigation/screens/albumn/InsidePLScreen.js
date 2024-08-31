@@ -3,7 +3,6 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ButtonImg from '../../../components/ButtonImg';
 
 const InsidePLScreen = ({ route }) => {
   const { img, title, ingredients } = route.params;

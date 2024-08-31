@@ -80,7 +80,7 @@ const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      {authStatus === 'authenticated' ? <AuthenticatedStack /> : <UnauthenticatedStack />}
+      {authStatus === 'unauthenticated' ? <AuthenticatedStack /> : <UnauthenticatedStack />}
     </NavigationContainer>
   );
 };
