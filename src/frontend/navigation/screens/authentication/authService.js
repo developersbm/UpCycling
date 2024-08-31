@@ -7,10 +7,9 @@ import {
     resetPassword,
     confirmResetPassword,
     fetchAuthSession as amplifyFetchAuthSession,
-    getCurrentUser as amplifyGetCurrentUser,
-    deleteUser
+    getCurrentUser as amplifyGetCurrentUser
 } from 'aws-amplify/auth';
-
+import axios from 'axios';
 
 // Sign up a new user
 export const signUpUser = async ({ username, email, password }) => {
@@ -25,10 +24,28 @@ export const signUpUser = async ({ username, email, password }) => {
             }
         });
         console.log('Sign-up successful:', { isSignUpComplete, userId, nextStep });
+
+        if (!isSignUpComplete) {
+            const payload = {
+                username: username,
+                email: email,
+                password: password,
+            };
+            await sendUserDataToDynamoDB(payload);
+        }
         return { isSignUpComplete, userId, nextStep };
     } catch (error) {
         console.error('Error signing up:', error);
         throw new Error(error.message);
+    }
+};
+
+const sendUserDataToDynamoDB = async(payload) => {
+    try {
+        const response = await axios.post('https://n8utuhf7md.execute-api.us-east-1.amazonaws.com/Users/RestAPI', payload);
+        console.log('User data sent to DynamoDB:', response.data);
+    } catch (error) {
+        console.error('Error sending data to DynamoDB:', error);
     }
 };
 
@@ -145,8 +162,3 @@ export const getAuthenticatedUser = async () => {
         throw new Error(error.message);
     }
 };
-
-// Delete user
-export const handleDeleteAttributes = async ({ attributes }) => {
-  await deleteUser();
-}

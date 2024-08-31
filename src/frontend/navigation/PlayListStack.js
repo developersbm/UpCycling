@@ -15,8 +15,8 @@ function PlayListStack() {
       screenOptions={({ route, navigation }) => ({
         headerStyle: { backgroundColor: '#fff' },
         headerTitle: '',
-        headerShown: route.name === 'InsidePLScreen' || route.name === 'ChatbotScreen' || route.name === 'CameraScreen' ? true : false,
-        headerLeft: route.name === 'InsidePLScreen' || route.name === 'ChatbotScreen' || route.name === 'CameraScreen' ? () => (
+        headerShown: route.name === 'InsidePLScreen' || route.name === 'ChatbotScreen' || route.name === 'CameraScreen',
+        headerLeft: (route.name === 'InsidePLScreen' || route.name === 'ChatbotScreen' || route.name === 'CameraScreen') ? () => (
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerButton}>
             <Ionicons name="arrow-back" size={24} color="black" />
           </TouchableOpacity>

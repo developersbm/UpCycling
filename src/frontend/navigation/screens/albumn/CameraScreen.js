@@ -1,90 +1,84 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
-import { Camera } from 'expo-camera';
-import * as ImagePicker from 'expo-image-picker';
+// navigation/screens/albumn/CameraScreen.js
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 
-export default function CameraScreen({ navigation }) {
-  const [isCameraReady, setIsCameraReady] = useState(false);
-  const [image, setImage] = useState(null);
-  const cameraRef = useRef(null);
+const CameraScreen = ({ navigation }) => {
+    const [imageUri, setImageUri] = useState(null);
+    const [title, setTitle] = useState('');
 
-  const takePicture = async () => {
-    if (cameraRef.current && isCameraReady) {
-      const data = await cameraRef.current.takePictureAsync();
-      setImage(data.uri);
-    }
-  };
+    const takePhoto = () => {
+        launchCamera({ mediaType: 'photo', quality: 1 }, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.errorMessage) {
+                console.log('ImagePicker Error: ', response.errorMessage);
+            } else {
+                setImageUri(response.uri);
+            }
+        });
+    };
 
-  const openImagePicker = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
+    const savePhotoDetails = () => {
+        console.log('Image URI:', imageUri);
+        console.log('Title:', title);
+        navigation.goBack();
+    };
 
-    if (!result.canceled) {
-      setImage(result.uri);
-    }
-  };
-
-  const submitPicture = () => {
-    if (image) {
-      navigation.navigate('AiScreen', { imageURI: image });
-    }
-  };
-
-  const handleCameraReady = () => {
-    setIsCameraReady(true);
-  };
-
-  return (
-    <View style={styles.container}>
-      {!image ? (
-        <Camera
-          style={styles.camera}
-          ref={cameraRef}
-          onCameraReady={handleCameraReady}
-        />
-      ) : (
-        <Image source={{ uri: image }} style={styles.preview} />
-      )}
-
-      <View style={styles.controls}>
-        {image ? (
-          <TouchableOpacity onPress={submitPicture}>
-            <Text>Submit</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={takePicture}>
-            <Text>Take Picture</Text>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity onPress={openImagePicker}>
-          <Text>Pick Image</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
+    return (
+        <View style={styles.container}>
+            <Button title="Take Photo" onPress={takePhoto} />
+            {imageUri && (
+                <View style={styles.imageContainer}>
+                    <Image source={{ uri: imageUri }} style={styles.image} />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter title"
+                        value={title}
+                        onChangeText={setTitle}
+                    />
+                    <TouchableOpacity style={styles.button} onPress={savePhotoDetails}>
+                        <Text style={styles.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#000',
-  },
-  camera: {
-    flex: 5,
-    borderRadius: 10,
-  },
-  preview: {
-    flex: 5,
-    borderRadius: 10,
-  },
-  controls: {
-    flex: 0.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    imageContainer: {
+        marginTop: 20,
+        alignItems: 'center',
+    },
+    image: {
+        width: 300,
+        height: 300,
+        resizeMode: 'cover',
+    },
+    input: {
+        marginTop: 10,
+        borderColor: 'gray',
+        borderWidth: 1,
+        width: '100%',
+        padding: 10,
+    },
+    button: {
+        marginTop: 20,
+        backgroundColor: '#007BFF',
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+    },
 });
+
+export default CameraScreen;

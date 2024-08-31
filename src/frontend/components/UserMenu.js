@@ -27,7 +27,7 @@ const UserMenu = () => {
             <TouchableOpacity onPress={toggleMenu}>
                 <Image
                     source={require('../assets/icons/profile.png')}
-                    style={{ width: 100, height: 40, resizeMode: 'contain' }}
+                    style={{ width: 150, height: 50, resizeMode: 'contain'}}
                 />
             </TouchableOpacity>
             {menuVisible && (
@@ -51,12 +51,16 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: -20,
+        marginRight: -25,
     },
     dropdown: {
         position: 'absolute',
         top: 50,
-        right: 10,
+        right: 30,
         backgroundColor: 'white',
+        // borderColor: 'black',
+        // borderWidth: 1,
         borderRadius: 5,
         elevation: 3,
         padding: 10,
